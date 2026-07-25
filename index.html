@@ -50,6 +50,9 @@
         @keyframes dash { to { stroke-dashoffset: -20; } }
         .connecting-line { stroke-dasharray: 5; animation: dash 1s linear infinite; }
         .disabled { cursor: not-allowed; opacity: 0.8; }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="light p-3 md:p-6 flex flex-col justify-between min-h-screen">
@@ -102,7 +105,7 @@
             },
             {
                 id: 5, type: "matching",
-                q: "Match the subnetwork to a host address that would be included within the subnetwork.",
+                q: "Match the subnetwork to a host address that would be included within the subnetwork. (Not all options are used.)",
                 q_ar: "طابق الشبكة الفرعية بعنوان المضيف الصالح الذي يقع بداخلها.",
                 leftItems: [
                     { text: "192.168.1.32/27", letter: "A" },
@@ -118,7 +121,8 @@
                     { text: "192.168.1.48" },
                     { text: "192.168.1.68" },
                     { text: "192.168.1.121" },
-                    { text: "192.168.1.63 (Broadcast)" }
+                    { text: "192.168.1.63 (Broadcast)" },
+                    { text: "192.168.1.128" }
                 ],
                 correctMatches: { 0: 0, 1: 1, 2: 2 },
                 explanation: "Subnet .32/27 range is .33-.62 (matches .48). Subnet .64/27 range is .65-.94 (matches .68). Subnet .96/27 range is .97-.126 (matches .121).",
@@ -179,7 +183,7 @@
             {
                 id: 10, type: "matching",
                 q: "Match each IPv4 address to the appropriate address category.",
-                q_ar: "طابق كل عنوان IPv4 مع الفئة المناسبة له.",
+                q_ar: "طابق كل عنوان IPv4 مع الفئة المناسبة له. (يمكن ربط أكثر من عنوان بفئة واحدة)",
                 leftItems: [
                     { text: "192.168.100.161/25", letter: "A" },
                     { text: "192.168.1.191/26", letter: "B" },
@@ -304,7 +308,7 @@
                 q: "Which three addresses are valid public addresses? (Choose three.)",
                 q_ar: "ما هي العناوين الثلاثة التي تُعتبر عناوين عامة (Public Addresses) صالحة؟ (اختر ثلاثة)",
                 options: ["198.133.219.17", "192.168.1.245", "10.15.250.5", "128.107.12.117", "172.31.1.25", "64.104.78.227"],
-                options_ar: ["198.133.219.17", "192.168.1.245 (خاص)", "10.15.250.5 (خاص)", "128.107.12.117", "172.31.1.25 (خاص)", "64.104.78.227"],
+                options_ar: ["198.133.219.17", "192.168.1.245", "10.15.250.5", "128.107.12.117", "172.31.1.25", "64.104.78.227"],
                 correct: [0, 3, 5],
                 explanation: "192.168, 10.x, and 172.16-31 are private. The rest are public.",
                 explanation_ar: "الخيارات الصحيحة هي التي لا تقع ضمن النطاقات الخاصة للشبكات (10، 172.16، 192.168)."
@@ -572,11 +576,12 @@
                     { text: "تتم ترجمة الحزم بين الإصدارين.", letter: "C" }
                 ],
                 rightItems: [
-                    { text: "dual-stack" },
+                    { text: "DHCP" },
+                    { text: "translation" },
                     { text: "tunneling" },
-                    { text: "translation" }
+                    { text: "dual-stack" }
                 ],
-                correctMatches: { 0: 0, 1: 1, 2: 2 },
+                correctMatches: { 0: 3, 1: 2, 2: 1 },
                 explanation: "Dual-stack: Run both natively. Tunneling: Encapsulate one inside the other. Translation: Convert headers (NAT64).",
                 explanation_ar: "مكدس مزدوج: عمل كلاهما معاً. الأنفاق: تغليف أحدهما بالآخر. الترجمة: تحويل الترويسة."
             },
@@ -692,7 +697,7 @@
             },
             {
                 id: 46, type: "matching",
-                q: "Match each description with an appropriate IP address. (Not all options are used.)",
+                q: "Match each description with an appropriate IP address.",
                 q_ar: "طابق كل وصف مع عنوان IP المناسب له.",
                 leftItems: [
                     { text: "a link-local address", letter: "A" },
@@ -805,63 +810,73 @@
             },
             {
                 id: 54, type: "single",
-                q: "What is the purpose of the ICMPv6 Router Solicitation message?",
-                q_ar: "ما هو الغرض من رسالة طلب موجه (Router Solicitation) في ICMPv6؟",
-                options: ["To allow a host to discover its IPv6 prefix and default gateway", "To check if another host is reachable", "To resolve an IPv6 address to a MAC address", "To advertise a host's MAC address"],
-                options_ar: ["للسماح للمضيف باكتشاف بادئة IPv6 والبوابة الافتراضية", "للتحقق مما إذا كان المضيف الآخر قابلاً للوصول", "لترجمة عنوان IPv6 إلى عنوان MAC", "للإعلان عن عنوان MAC للمضيف"],
+                q: "Which term describes a field in the IPv4 packet header that contains a unicast, multicast, or broadcast address?",
+                q_ar: "أي مصطلح يصف حقلاً في ترويسة IPv4 يحتوي على عنوان بث أحادي، متعدد، أو عام؟",
+                options: ["destination IPv4 address", "protocol", "TTL", "header checksum"],
+                options_ar: ["عنوان IPv4 الوجهة (destination IPv4 address)", "البروتوكول", "وقت الصلاحية TTL", "التحقق من الترويسة"],
                 correct: [0],
-                explanation: "Hosts send Router Solicitation (RS) messages to routers to ask for network information like the IPv6 prefix and default gateway for SLAAC.",
-                explanation_ar: "ترسل الأجهزة رسائل RS للموجهات لطلب معلومات الشبكة مثل البادئة والبوابة الافتراضية لتكوين العناوين تلقائياً (SLAAC)."
+                explanation: "The destination IPv4 address field can hold a unicast, multicast, or broadcast address depending on the target.",
+                explanation_ar: "حقل عنوان الوجهة يمكن أن يكون مخصصاً لمضيف واحد (أحادي)، مجموعة (متعدد)، أو للجميع (بث كلي)."
             },
             {
                 id: 55, type: "single",
-                q: "Which IPv6 address is the all-routers multicast address?",
-                q_ar: "أي عنوان IPv6 هو عنوان البث المتعدد لجميع الموجهات (all-routers)؟",
-                options: ["FF02::1", "FF02::2", "FF02::A", "FE80::1"],
-                options_ar: ["FF02::1", "FF02::2", "FF02::A", "FE80::1"],
-                correct: [1],
-                explanation: "FF02::2 is the all-routers multicast address. All IPv6 routers listen to this group.",
-                explanation_ar: "العنوان FF02::2 مخصص للبث المتعدد لجميع الموجهات، وتستمع إليه جميع موجهات IPv6 في الشبكة المحلية."
+                q: "Which term describes a field in the IPv4 packet header used to limit the lifetime of a packet?",
+                q_ar: "أي حقل في ترويسة IPv4 يُستخدم للحد من عمر الحزمة لمنعها من الدوران اللانهائي؟",
+                options: ["TTL", "source IPv4 address", "protocol", "header checksum"],
+                options_ar: ["وقت الصلاحية TTL", "عنوان IPv4 المصدر", "البروتوكول", "التحقق من الترويسة"],
+                correct: [0],
+                explanation: "The Time-to-Live (TTL) field limits a packet's lifetime, decrementing at each router hop.",
+                explanation_ar: "حقل وقت الصلاحية (TTL) يمنع الحزمة من الدوران إلى الأبد، حيث ينقص بمقدار 1 عند كل موجه."
             },
             {
                 id: 56, type: "single",
-                q: "What is the size of an IPv4 address?",
-                q_ar: "ما هو حجم عنوان IPv4؟",
-                options: ["32 bits", "64 bits", "128 bits", "48 bits"],
-                options_ar: ["32 بت", "64 بت", "128 بت", "48 بت"],
+                q: "Which term describes a field in the IPv4 packet header that contains a 4-bit binary value set to 0100?",
+                q_ar: "أي حقل في ترويسة IPv4 يحتوي على قيمة ثنائية من 4 بتات وتساوي 0100؟",
+                options: ["version", "source IPv4 address", "protocol", "TTL"],
+                options_ar: ["الإصدار (version)", "عنوان المصدر", "البروتوكول", "وقت الصلاحية"],
                 correct: [0],
-                explanation: "An IPv4 address is 32 bits long, typically represented in dotted-decimal format.",
-                explanation_ar: "عنوان IPv4 يتكون من 32 بت، ويتم تمثيله عادة بالنظام العشري المنقط."
+                explanation: "The Version field is 4 bits. 0100 in binary equals 4 in decimal, identifying it as an IPv4 packet.",
+                explanation_ar: "حقل الإصدار (Version) يحدد نوع البروتوكول، و0100 بالثنائي تعني 4 (أي الإصدار الرابع)."
             },
             {
                 id: 57, type: "single",
-                q: "Which of the following is a private IPv4 address?",
-                q_ar: "أي من العناوين التالية يُعتبر عنوان IPv4 خاص (Private)؟",
-                options: ["172.32.5.2", "192.168.10.50", "8.8.8.8", "11.0.0.1"],
-                options_ar: ["172.32.5.2", "192.168.10.50", "8.8.8.8", "11.0.0.1"],
-                correct: [1],
-                explanation: "192.168.0.0 to 192.168.255.255 is a private IP address range defined by RFC 1918. (172.32.x.x is public; private ends at 172.31).",
-                explanation_ar: "النطاق 192.168 يقع ضمن العناوين الخاصة. (انتبه: 172.32 يعتبر عام لأن الخاص ينتهي عند 172.31)."
+                q: "Which term describes a field in the IPv4 packet header used to identify the next level protocol?",
+                q_ar: "أي حقل في ترويسة IPv4 يُستخدم لتحديد بروتوكول الطبقة الأعلى (التالية)؟",
+                options: ["protocol", "version", "differentiated services", "header checksum"],
+                options_ar: ["البروتوكول (protocol)", "الإصدار", "الخدمات المتميزة", "التحقق من الترويسة"],
+                correct: [0],
+                explanation: "The protocol field identifies the upper-layer payload (like TCP, UDP, or ICMP).",
+                explanation_ar: "حقل البروتوكول يخبر الموجه بنوع البيانات المحمولة (TCP أو UDP مثلاً)."
             },
             {
                 id: 58, type: "single",
-                q: "What is the primary purpose of NAT (Network Address Translation)?",
-                q_ar: "ما هو الغرض الرئيسي لتقنية NAT (ترجمة عناوين الشبكة)؟",
-                options: ["To conserve public IPv4 addresses", "To encrypt network traffic", "To replace IPv6", "To route packets faster"],
-                options_ar: ["الحفاظ على عناوين IPv4 العامة (تقليل استهلاكها)", "تشفير حركة مرور الشبكة", "استبدال نظام IPv6", "توجيه الحزم بشكل أسرع"],
+                q: "Which term describes a field in the IPv4 packet header that contains a 4-bit binary value set to 0100? (Duplicate)",
+                q_ar: "تكرار: أي حقل في الترويسة يحتوي على 0100؟",
+                options: ["version", "differentiated services", "header checksum", "TTL"],
+                options_ar: ["الإصدار (version)", "الخدمات المتميزة", "التحقق من الترويسة", "وقت الصلاحية"],
                 correct: [0],
-                explanation: "NAT is primarily used to conserve public IPv4 addresses by allowing multiple private IPs to share one public IP.",
-                explanation_ar: "تُستخدم NAT بشكل رئيسي للحفاظ على عناوين IPv4 العامة من خلال السماح لأجهزة متعددة ذات عناوين خاصة بمشاركة عنوان عام واحد."
+                explanation: "0100 binary translates to decimal 4, stored in the Version field.",
+                explanation_ar: "القيمة 0100 تعادل 4، مخزنة في حقل الإصدار (Version)."
             },
             {
                 id: 59, type: "single",
-                q: "Which command displays the IPv6 routing table on a Cisco router?",
-                q_ar: "ما هو الأمر الذي يعرض جدول توجيه IPv6 على موجه سيسكو؟",
-                options: ["show ip route", "show ipv6 route", "show ipv6 interface", "show route ipv6"],
-                options_ar: ["show ip route", "show ipv6 route", "show ipv6 interface", "show route ipv6"],
-                correct: [1],
-                explanation: "The command 'show ipv6 route' displays the IPv6 routing table.",
-                explanation_ar: "الأمر 'show ipv6 route' مخصص لعرض جدول توجيه مسارات الإصدار السادس (IPv6)."
+                q: "What property of ARP causes cached IP-to-MAC mappings to remain in memory longer?",
+                q_ar: "ما هي خاصية ARP التي تبقي مطابقة الـ IP والـ MAC في الذاكرة لفترة أطول؟",
+                options: [
+                    "A static IP-to-MAC address entry can be entered manually into an ARP table.",
+                    "Entries in an ARP table are time-stamped and are purged after the timeout expires.",
+                    "The type field 0x806 appears in the header of the Ethernet frame.",
+                    "The port-to-MAC address table on a switch has the same entries as the ARP table."
+                ],
+                options_ar: [
+                    "يمكن إدخال مطابقة ثابتة (Static) يدوياً في جدول ARP.",
+                    "يتم ختم الإدخالات برقم زمني وحذفها.",
+                    "حقل النوع 0x806 يظهر في الترويسة.",
+                    "يتطابق جدول المبدل مع جدول الـ ARP."
+                ],
+                correct: [0],
+                explanation: "Static ARP entries do not age out automatically, so they remain in memory longer than dynamic ones.",
+                explanation_ar: "الإدخالات اليدوية الثابتة لا تحذف تلقائياً بل تبقى بشكل دائم."
             },
             {
                 id: 60, type: "single",
@@ -1045,8 +1060,87 @@
             }
         ];
 
+        // --- HELPER FUNCTION: SHUFFLE QUIZ COMPLETELY (DEEP SHUFFLE) ---
+        const generateShuffledQuiz = (data) => {
+            // 1. Shuffle the order of the questions
+            let shuffledQ = [...data];
+            for (let i = shuffledQ.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledQ[i], shuffledQ[j]] = [shuffledQ[j], shuffledQ[i]];
+            }
+
+            // 2. Shuffle the contents (options/matches) inside each question
+            return shuffledQ.map(q => {
+                if (q.type === 'single' || q.type === 'multi') {
+                    // Create an array mapping each option with its correctness
+                    let opts = q.options.map((opt, idx) => ({
+                        opt,
+                        opt_ar: q.options_ar[idx],
+                        isCorrect: q.correct.includes(idx)
+                    }));
+                    // Shuffle the options array
+                    for (let i = opts.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [opts[i], opts[j]] = [opts[j], opts[i]];
+                    }
+                    // Re-assemble the question with the new mixed options
+                    return {
+                        ...q,
+                        options: opts.map(o => o.opt),
+                        options_ar: opts.map(o => o.opt_ar),
+                        correct: opts.map((o, idx) => o.isCorrect ? idx : -1).filter(idx => idx !== -1)
+                    };
+                } else if (q.type === 'matching') {
+                    // Shuffle Left side
+                    let leftOpts = q.leftItems.map((item, idx) => ({
+                        item: { ...item },
+                        item_ar: { ...q.leftItems_ar[idx] },
+                        origIdx: idx
+                    }));
+                    for (let i = leftOpts.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [leftOpts[i], leftOpts[j]] = [leftOpts[j], leftOpts[i]];
+                    }
+                    // Reassign A, B, C letters so they stay in order vertically
+                    leftOpts.forEach((lo, idx) => {
+                        lo.item.letter = String.fromCharCode(65 + idx);
+                        lo.item_ar.letter = String.fromCharCode(65 + idx);
+                    });
+                    
+                    // Shuffle Right side
+                    let rightOpts = q.rightItems.map((item, idx) => ({
+                        item: { ...item },
+                        origIdx: idx
+                    }));
+                    for (let i = rightOpts.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [rightOpts[i], rightOpts[j]] = [rightOpts[j], rightOpts[i]];
+                    }
+
+                    // Map the new correct connections
+                    let newCorrectMatches = {};
+                    leftOpts.forEach((lo, newLeftIdx) => {
+                        const oldRightIdx = q.correctMatches[lo.origIdx];
+                        const newRightIdx = rightOpts.findIndex(ro => ro.origIdx === oldRightIdx);
+                        newCorrectMatches[newLeftIdx] = newRightIdx;
+                    });
+
+                    return {
+                        ...q,
+                        leftItems: leftOpts.map(lo => lo.item),
+                        leftItems_ar: leftOpts.map(lo => lo.item_ar),
+                        rightItems: rightOpts.map(ro => ro.item),
+                        correctMatches: newCorrectMatches
+                    };
+                }
+                return q;
+            });
+        };
+
         function App() {
             const [view, setView] = useState('start');
+            // Init with deep shuffled quiz on the very first mount!
+            const [shuffledQuiz, setShuffledQuiz] = useState(() => generateShuffledQuiz(quizData));
             const [currentIndex, setCurrentIndex] = useState(0);
             const [score, setScore] = useState(0);
             const [selectedIndices, setSelectedIndices] = useState([]);
@@ -1056,14 +1150,12 @@
             const [isDarkMode, setIsDarkMode] = useState(false);
             
             // Matching State
-            // Modified to allow multiple left pins to connect to the same right pin.
-            // Still maps leftIdx -> rightIdx, but we no longer delete previous connections to rightIdx.
             const [matchingState, setMatchingState] = useState({});
             const [activeLeftItem, setActiveLeftItem] = useState(null);
             const [pinCoords, setPinCoords] = useState({});
             const containerRef = useRef(null);
 
-            const currentQ = quizData[currentIndex];
+            const currentQ = shuffledQuiz[currentIndex] || shuffledQuiz[0];
 
             useEffect(() => {
                 if (isDarkMode) { document.body.classList.add('dark'); document.body.classList.remove('light'); }
@@ -1113,14 +1205,11 @@
 
             const selectRightPin = (rightIdx) => {
                 if (isSubmitted || activeLeftItem === null) return;
-                
-                // Allow multiple connections to the same right target!
-                // We just map the current active left pin to this right pin.
-                setMatchingState(prev => ({
-                    ...prev,
-                    [activeLeftItem]: rightIdx
-                }));
-                
+                setMatchingState(prev => {
+                    const newState = { ...prev };
+                    newState[activeLeftItem] = rightIdx;
+                    return newState;
+                });
                 setActiveLeftItem(null);
                 calculatePinCoordinates();
             };
@@ -1145,23 +1234,36 @@
             };
 
             const nextQuestion = () => {
-                if (currentIndex < quizData.length - 1) {
+                if (currentIndex < shuffledQuiz.length - 1) {
                     setCurrentIndex(prev => prev + 1);
                     setSelectedIndices([]); setMatchingState({}); setActiveLeftItem(null); setIsSubmitted(false);
                 } else setView('result');
             };
 
-            const resetQuiz = () => {
-                setCurrentIndex(0); setScore(0); setSelectedIndices([]); setMatchingState({}); setActiveLeftItem(null); setIsSubmitted(false); setWrongAnswers([]); setView('start');
+            const startExam = () => {
+                // Regenerate completely new random order for questions AND options!
+                setShuffledQuiz(generateShuffledQuiz(quizData));
+                setCurrentIndex(0); 
+                setScore(0); 
+                setSelectedIndices([]); 
+                setMatchingState({}); 
+                setActiveLeftItem(null); 
+                setIsSubmitted(false); 
+                setWrongAnswers([]); 
+                setView('quiz');
             };
 
-            const progress = ((currentIndex + 1) / quizData.length) * 100;
+            const resetToHome = () => {
+                setView('start');
+            };
+
+            const progress = ((currentIndex + 1) / shuffledQuiz.length) * 100;
             const pinColors = ['#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
 
             if (view === 'start') {
                 return (
-                    <div className="min-h-[85vh] flex items-center justify-center p-4">
-                        <div className="glass-card max-w-3xl w-full p-8 md:p-12 rounded-3xl text-center relative overflow-hidden transition-colors">
+                    <div className="min-h-[85vh] flex items-center justify-center p-4 animate-fadeIn">
+                        <div className="glass-card max-w-3xl w-full p-8 md:p-12 rounded-3xl text-center relative overflow-hidden transition-colors border">
                             <button onClick={() => setIsDarkMode(!isDarkMode)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-slate-500/10 flex items-center justify-center text-xl transition-all hover:scale-110">
                                 <i className={`fas ${isDarkMode ? 'fa-sun text-amber-400' : 'fa-moon text-indigo-600'}`}></i>
                             </button>
@@ -1169,8 +1271,11 @@
                                 <i className="fas fa-network-wired"></i>
                             </div>
                             <h1 className="text-3xl md:text-5xl font-extrabold mb-3 tracking-wide">CCNA Modules 11-13</h1>
-                            <p className="font-semibold text-lg md:text-xl opacity-80 mb-8">IP Addressing Exam Full Edition</p>
-                            <button onClick={() => setView('quiz')} className="w-full max-w-md bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-[1.02] shadow-xl text-lg">
+                            <p className="font-semibold text-lg md:text-xl opacity-80 mb-4">IP Addressing Exam (Deep Randomization)</p>
+                            <p className="text-sm opacity-60 mb-8 max-w-lg mx-auto leading-relaxed">
+                                <i className="fas fa-shuffle mr-1 text-emerald-500"></i> Every time you enter or start this exam, the <b>questions, the options (A,B,C,D), and the matching targets</b> are deeply shuffled to prevent memorization!
+                            </p>
+                            <button onClick={startExam} className="w-full max-w-md bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-2xl transition-all hover:scale-[1.02] shadow-xl text-lg">
                                 Start Exam
                             </button>
                         </div>
@@ -1179,25 +1284,28 @@
             }
 
             if (view === 'result') {
-                const percentage = (score / quizData.length) * 100;
+                const percentage = (score / shuffledQuiz.length) * 100;
                 return (
-                    <div className="min-h-screen py-6">
+                    <div className="min-h-screen py-6 animate-fadeIn">
                         <div className="glass-card max-w-4xl w-full mx-auto p-6 md:p-10 rounded-3xl">
                             <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-2">Exam Result</h2>
                             <div className="flex justify-center items-center flex-col my-8">
                                 <span className="text-5xl font-extrabold text-blue-500 mb-2">{Math.round(percentage)}%</span>
-                                <span className="opacity-70">{score} / {quizData.length} Correct Answers</span>
+                                <span className="opacity-70">{score} / {shuffledQuiz.length} Correct Answers</span>
                             </div>
-                            <button onClick={resetQuiz} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl">Try Again</button>
+                            <div className="flex gap-4">
+                                <button onClick={resetToHome} className="w-1/3 bg-slate-500 hover:bg-slate-600 text-white font-bold py-4 rounded-2xl transition-all">Home</button>
+                                <button onClick={startExam} className="w-2/3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all">Try Again <span className="text-xs opacity-80 ml-2">(Full Reshuffle)</span></button>
+                            </div>
                         </div>
                     </div>
                 );
             }
 
             return (
-                <div className="w-full flex flex-col min-h-[90vh] py-4">
+                <div className="w-full flex flex-col min-h-[90vh] py-4 animate-fadeIn">
                     <div className="flex justify-between items-center mb-4 px-2">
-                        <button onClick={resetQuiz} className="opacity-70 hover:opacity-100 font-semibold"><i className="fas fa-arrow-left"></i> Exit</button>
+                        <button onClick={resetToHome} className="opacity-70 hover:opacity-100 font-semibold"><i className="fas fa-arrow-left"></i> Exit</button>
                         <div className="flex items-center gap-4">
                             <button onClick={() => setIsDarkMode(!isDarkMode)} className="text-lg"><i className={`fas ${isDarkMode ? 'fa-sun text-amber-400' : 'fa-moon text-indigo-600'}`}></i></button>
                             <div className="flex items-center gap-2">
@@ -1209,11 +1317,14 @@
                         </div>
                     </div>
 
-                    <div className="w-full option-card h-2 rounded-full mb-6"><div className="bg-blue-500 h-full progress-bar" style={{ width: `${progress}%` }}></div></div>
+                    <div className="w-full option-card h-2 rounded-full mb-6 border overflow-hidden"><div className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full progress-bar" style={{ width: `${progress}%` }}></div></div>
 
                     <div className="glass-card p-6 md:p-8 rounded-3xl shadow-xl flex-grow flex flex-col justify-between">
                         <div>
-                            <div className="mb-4 text-xs font-semibold text-blue-500 uppercase">Q {currentIndex + 1} of {quizData.length}</div>
+                            <div className="flex justify-between items-center mb-4">
+                                <div className="text-xs font-semibold text-blue-500 uppercase">Q {currentIndex + 1} of {shuffledQuiz.length}</div>
+                                <div className="text-[10px] font-mono opacity-50 bg-slate-500/10 px-2 py-1 rounded">Orig ID: {currentQ.id}</div>
+                            </div>
                             <h2 className="text-lg md:text-xl font-bold mb-6 leading-relaxed">{arabicTranslation ? currentQ.q_ar : currentQ.q}</h2>
 
                             {currentQ.type === 'matching' ? (
@@ -1243,7 +1354,7 @@
                                                 const color = pinColors[idx % pinColors.length];
                                                 return (
                                                     <div key={idx} className={`flex items-center gap-3 p-3 rounded-xl border ${isActive ? 'border-blue-500 shadow-md' : 'option-card'}`}>
-                                                        <div id={`left-pin-${idx}`} onClick={() => selectLeftPin(idx)} className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm cursor-pointer z-30 ${!isConnected ? 'pin-unmatched border-2 hover:scale-110' : ''}`} style={isConnected ? { backgroundColor: color, color: '#fff' } : {}}>{leftItem.letter}</div>
+                                                        <div id={`left-pin-${idx}`} onClick={() => selectLeftPin(idx)} className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm cursor-pointer z-30 transition-transform ${!isConnected ? 'pin-unmatched border-2 hover:scale-110' : ''}`} style={isConnected ? { backgroundColor: color, color: '#fff' } : {}}>{leftItem.letter}</div>
                                                         <div className="text-xs md:text-sm font-medium opacity-90">{leftItem.text}</div>
                                                     </div>
                                                 );
@@ -1251,24 +1362,18 @@
                                         </div>
                                         <div className="space-y-4">
                                             {currentQ.rightItems.map((rightItem, idx) => {
-                                                // A right pin is "connected" if ANY left pin maps to it
                                                 const isConnected = Object.values(matchingState).includes(idx);
-                                                
-                                                // If connected, grab ALL left pins that map to it so we can show their letters
                                                 let badgeText = '?';
                                                 let badgeColor = '';
-                                                
                                                 if (isConnected) {
                                                     const mappedLeftIndices = Object.keys(matchingState).filter(k => matchingState[k] === idx);
-                                                    // Show the letters of all connected pins (e.g., "A, C")
                                                     badgeText = mappedLeftIndices.map(k => currentQ.leftItems[parseInt(k)].letter).join(',');
-                                                    // Use the color of the first one to style the badge background
                                                     badgeColor = pinColors[parseInt(mappedLeftIndices[0]) % pinColors.length];
                                                 }
 
                                                 return (
                                                     <div key={idx} className="flex items-center gap-3 p-3 rounded-xl border option-card">
-                                                        <div id={`right-pin-${idx}`} onClick={() => selectRightPin(idx)} className={`min-w-[2rem] px-2 h-8 rounded-full flex items-center justify-center font-bold text-sm cursor-pointer z-30 ${!isConnected ? 'border-2 border-dashed hover:scale-110' : ''}`} style={isConnected ? { backgroundColor: badgeColor, color: '#fff' } : {}}>{badgeText}</div>
+                                                        <div id={`right-pin-${idx}`} onClick={() => selectRightPin(idx)} className={`min-w-[2rem] px-2 h-8 rounded-full flex items-center justify-center font-bold text-sm cursor-pointer z-30 transition-transform ${!isConnected ? 'border-2 border-dashed hover:scale-110' : ''}`} style={isConnected ? { backgroundColor: badgeColor, color: '#fff' } : {}}>{badgeText}</div>
                                                         <div className="text-xs md:text-sm font-mono opacity-90">{rightItem.text}</div>
                                                     </div>
                                                 );
@@ -1288,7 +1393,7 @@
 
                                         return (
                                             <div key={idx} onClick={() => toggleOption(idx)} className={cardClass}>
-                                                <div className={`flex-shrink-0 w-5 h-5 rounded${currentQ.type==='single'?'-full':''} border-2 flex items-center justify-center ${isSelected ? 'border-blue-500 bg-blue-500' : 'border-gray-400'}`}>
+                                                <div className={`flex-shrink-0 w-5 h-5 rounded${currentQ.type==='single'?'-full':''} border-2 flex items-center justify-center transition-colors ${isSelected ? 'border-blue-500 bg-blue-500' : 'border-gray-400 dark:border-slate-500'}`}>
                                                     {isSelected && currentQ.type==='single' && <div className="w-2.5 h-2.5 rounded-full bg-white"></div>}
                                                     {isSelected && currentQ.type==='multi' && <i className="fas fa-check text-[10px] text-white"></i>}
                                                 </div>
@@ -1300,7 +1405,7 @@
                             )}
 
                             {isSubmitted && (
-                                <div className="p-4 rounded-2xl mb-8 terminal-box opacity-90 border">
+                                <div className="p-4 rounded-2xl mb-8 terminal-box opacity-90 border animate-fadeIn">
                                     <h4 className="font-bold mb-2 text-amber-500 dark:text-amber-400"><i className="fas fa-lightbulb mr-2"></i> Explanation</h4>
                                     <p className="text-sm leading-relaxed">{arabicTranslation ? currentQ.explanation_ar : currentQ.explanation}</p>
                                 </div>
@@ -1308,9 +1413,9 @@
                         </div>
 
                         {!isSubmitted ? (
-                            <button onClick={handleSubmitAnswer} disabled={currentQ.type === 'matching' ? Object.keys(matchingState).length < currentQ.leftItems.length : selectedIndices.length === 0} className={`w-full font-bold py-4 rounded-2xl shadow-lg text-white ${((currentQ.type === 'matching' ? Object.keys(matchingState).length === currentQ.leftItems.length : selectedIndices.length > 0)) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 dark:bg-slate-700 disabled'}`}>Submit Answer</button>
+                            <button onClick={handleSubmitAnswer} disabled={currentQ.type === 'matching' ? Object.keys(matchingState).length < currentQ.leftItems.length : selectedIndices.length === 0} className={`w-full font-bold py-4 rounded-2xl shadow-lg text-white transition-colors ${((currentQ.type === 'matching' ? Object.keys(matchingState).length === currentQ.leftItems.length : selectedIndices.length > 0)) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 dark:bg-slate-700 disabled'}`}>Submit Answer</button>
                         ) : (
-                            <button onClick={nextQuestion} className="w-full bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900 font-extrabold py-4 rounded-2xl shadow-lg">Next Question <i className="fas fa-arrow-right ml-2"></i></button>
+                            <button onClick={nextQuestion} className="w-full bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900 font-extrabold py-4 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">Next Question <i className="fas fa-arrow-right ml-2"></i></button>
                         )}
                     </div>
                 </div>
@@ -1322,11 +1427,3 @@
     </script>
 </body>
 </html>
-```
-eof
-
-**ما الذي تم تغييره وتحديثه؟**
-1. تم تعديل دالة `selectRightPin` لتسمح بإضافة وتعيين عدة عناصر من اليسار إلى نفس العنصر في اليمين (Multi-to-One connection).
-2. عند إتمام التوصيل المتعدد، سيتغير شكل الزر (الشارة) في اليمين ليتسع ويعرض **جميع الأحرف** التي تم ربطها به مفصولة بفاصلة (مثلاً سيظهر `A,C` في الدائرة إذا ربطت الخيارين A و C بنفس الهدف).
-
-الآن يمكنك اختبار الملف، ستجد أن المشكلة تم حلها بالكامل في السؤال رقم 10 ويمكنك تعيين عناوين متعددة كـ Host، و Network. بالتوفيق!
